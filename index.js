@@ -13,6 +13,13 @@
 
     const parsedState = JSON.parse(state.textContent);
     const orderId = parsedState.orderId;
+
+    if (!orderId) {
+      throw new Error(
+        `Couldn't retrieve orderId, stateContent: ${parsedState}`
+      );
+    }
+
     let carrierText = document
       .querySelector("#carrierRelatedInfo-container h1")
       ?.textContent?.trim();
@@ -53,7 +60,9 @@
         `Order Id: ${orderId}\nCarrier: ${carrier}\nTracking Id: ${trackingId}\n\nPress OK submit tracking to Atlas Market`
       )
     ) {
-      window.location.href = `https://atlas.market/tools/amazon-tracking?orderId=${orderId}&carrier=${carrier}&trackingId=${trackingId}`;
+      window.location.href = encodeURI(
+        `https://atlas.market/tools/amazon-tracking?orderId=${orderId}&carrier=${carrier}&trackingId=${trackingId}`
+      );
     }
   } catch (error) {
     console.log(error);
